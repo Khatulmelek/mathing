@@ -24,6 +24,7 @@ export function Quiz() {
   const [questionNumber, setQuestionNumber] = useState(0)
   const [score, setScore] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [questionStartTime, setQuestionStartTime] = useState<number>(0)
   const [totalTimeMs, setTotalTimeMs] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -55,20 +56,17 @@ export function Quiz() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!currentQuestion || loading) return
+    if (!currentQuestion || submitting) return
 
     const responseTime = performance.now() - questionStartTime
-    setTotalTimeMs(prev => prev + responseTime)
+    const newTotalTime = totalTimeMs + responseTime
 
     const isCorrect = parseInt(userAnswer) === currentQuestion.answer
-    if (isCorrect) {
-      setScore(prev => prev + 1)
-    }
+    const newScore = isCorrect ? score + 1 : score
 
     if (questionNumber >= TOTAL_QUESTIONS) {
       // Game finished - submit score
-      const finalTotalTime = totalTimeMs + responseTime
-      const finalScore = isCorrect ? score + 1 : score
+      setSubmitting(true)
       
       try {
         const response = await fetch('/api/submit', {
@@ -76,9 +74,9 @@ export function Quiz() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             playerName,
-            score: finalScore,
+            score: newScore,
             totalQuestions: TOTAL_QUESTIONS,
-            totalTimeMs: Math.round(finalTotalTime)
+            totalTimeMs: Math.round(newTotalTime)
           })
         })
         const result = await response.json()
@@ -87,8 +85,11 @@ export function Quiz() {
         }
       } catch (error) {
         console.error('Failed to submit score:', error)
+        setSubmitting(false)
       }
     } else {
+      setScore(newScore)
+      setTotalTimeMs(newTotalTime)
       setQuestionNumber(prev => prev + 1)
       fetchQuestion()
     }
@@ -167,8 +168,8 @@ export function Quiz() {
                 className="text-center text-2xl h-14"
               />
             </div>
-            <Button type="submit" size="lg" className="w-full">
-              Submit Answer
+            <Button type="submit" size="lg" className="w-full" disabled={submitting}>
+              {submitting ? 'Submitting...' : 'Submit Answer'}
             </Button>
           </form>
         ) : null}
