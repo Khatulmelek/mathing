@@ -8,14 +8,14 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-background py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        <header className="mb-8">
-          <Button variant="ghost" asChild className="mb-4">
+    <main className="min-h-dvh bg-background py-4 px-3 sm:py-8 sm:px-4">
+      <div className="max-w-lg mx-auto">
+        <header className="mb-6 sm:mb-8">
+          <Button variant="ghost" asChild className="mb-3 sm:mb-4 h-9 text-sm">
             <Link href="/">← Back to Quiz</Link>
           </Button>
-          <h1 className="text-3xl font-bold">Privacy Policy</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-2xl sm:text-3xl font-bold">Privacy Policy</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">
             Last updated: {new Date().toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -24,10 +24,10 @@ export default function PrivacyPage() {
           </p>
         </header>
         
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">1. Information We Collect</h2>
-            <p className="text-muted-foreground mb-4">
+        <div className="prose prose-neutral dark:prose-invert max-w-none text-sm sm:text-base">
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">1. Information We Collect</h2>
+            <p className="text-muted-foreground mb-3 sm:mb-4">
               When you use the Mathing quiz application, we collect the following information:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -37,9 +37,9 @@ export default function PrivacyPage() {
             </ul>
           </section>
           
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">2. How We Use Your Information</h2>
-            <p className="text-muted-foreground mb-4">
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">2. How We Use Your Information</h2>
+            <p className="text-muted-foreground mb-3 sm:mb-4">
               The information collected is used solely for the following purposes:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -49,8 +49,8 @@ export default function PrivacyPage() {
             </ul>
           </section>
           
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">3. Data Storage</h2>
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">3. Data Storage</h2>
             <p className="text-muted-foreground">
               Your quiz data is stored in a local SQLite database. We do not share your 
               information with third parties. The display name you provide is visible to 
@@ -58,16 +58,16 @@ export default function PrivacyPage() {
             </p>
           </section>
           
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">4. Cookies</h2>
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">4. Cookies</h2>
             <p className="text-muted-foreground">
               This application does not use cookies or tracking technologies to identify 
               individual users.
             </p>
           </section>
           
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">5. Data Retention</h2>
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">5. Data Retention</h2>
             <p className="text-muted-foreground">
               Quiz results and leaderboard entries are retained indefinitely to maintain 
               the leaderboard functionality. If you wish to have your data removed, please 
@@ -75,8 +75,8 @@ export default function PrivacyPage() {
             </p>
           </section>
           
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">6. Children&apos;s Privacy</h2>
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">6. Children&apos;s Privacy</h2>
             <p className="text-muted-foreground">
               This application is suitable for users of all ages. We do not knowingly 
               collect personal information from children under 13. The only information 
@@ -84,8 +84,8 @@ export default function PrivacyPage() {
             </p>
           </section>
           
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold mb-3">7. Changes to This Policy</h2>
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">7. Changes to This Policy</h2>
             <p className="text-muted-foreground">
               We may update this privacy policy from time to time. Any changes will be 
               reflected on this page with an updated revision date.
@@ -93,7 +93,7 @@ export default function PrivacyPage() {
           </section>
           
           <section>
-            <h2 className="text-xl font-semibold mb-3">8. Contact</h2>
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">8. Contact</h2>
             <p className="text-muted-foreground">
               If you have any questions about this privacy policy, please contact the 
               site administrator.

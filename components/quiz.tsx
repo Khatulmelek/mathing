@@ -103,14 +103,14 @@ export function Quiz() {
 
   if (!gameStarted) {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center">Math Quiz</CardTitle>
+      <Card className="w-full">
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="text-center text-lg sm:text-xl">Math Quiz</CardTitle>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={startGame} className="flex flex-col gap-4">
+        <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+          <form onSubmit={startGame} className="flex flex-col gap-3 sm:gap-4">
             <div>
-              <label htmlFor="playerName" className="block text-sm font-medium mb-2">
+              <label htmlFor="playerName" className="block text-sm font-medium mb-1.5 sm:mb-2">
                 Enter your name to start
               </label>
               <Input
@@ -121,9 +121,10 @@ export function Quiz() {
                 placeholder="Your name"
                 required
                 autoFocus
+                className="h-11 sm:h-10 text-base"
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full h-11 sm:h-10 text-base">
               Start Quiz
             </Button>
           </form>
@@ -133,27 +134,27 @@ export function Quiz() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
+    <Card className="w-full">
+      <CardHeader className="pb-3 sm:pb-6">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-xs sm:text-sm text-muted-foreground">
             Question {questionNumber} of {TOTAL_QUESTIONS}
           </span>
-          <span className="text-sm font-medium">
+          <span className="text-xs sm:text-sm font-medium">
             Score: {score}
           </span>
         </div>
-        <Progress value={(questionNumber / TOTAL_QUESTIONS) * 100} />
+        <Progress value={(questionNumber / TOTAL_QUESTIONS) * 100} className="h-2" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
         {loading ? (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground">Loading question...</p>
+          <div className="text-center py-6 sm:py-8">
+            <p className="text-sm sm:text-base text-muted-foreground">Loading question...</p>
           </div>
         ) : currentQuestion ? (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div className="text-center py-4">
-              <p className="text-4xl font-mono font-bold">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
+            <div className="text-center py-3 sm:py-4">
+              <p className="text-3xl sm:text-4xl font-mono font-bold">
                 {currentQuestion.expression} = ?
               </p>
             </div>
@@ -161,14 +162,16 @@ export function Quiz() {
               <Input
                 ref={inputRef}
                 type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 value={userAnswer}
                 onChange={(e) => setUserAnswer(e.target.value)}
                 placeholder="Your answer"
                 required
-                className="text-center text-2xl h-14"
+                className="text-center text-xl sm:text-2xl h-12 sm:h-14"
               />
             </div>
-            <Button type="submit" size="lg" className="w-full" disabled={submitting}>
+            <Button type="submit" size="lg" className="w-full h-12 sm:h-11 text-base" disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit Answer'}
             </Button>
           </form>
