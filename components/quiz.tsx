@@ -1,0 +1,178 @@
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+
+interface Question {
+  id: string
+  expression: string
+  answer: number
+}
+
+const TOTAL_QUESTIONS = 10
+
+export function Quiz() {
+  const router = useRouter()
+  const [playerName, setPlayerName] = useState('')
+  const [gameStarted, setGameStarted] = useState(false)
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
+  const [userAnswer, setUserAnswer] = useState('')
+  const [questionNumber, setQuestionNumber] = useState(0)
+  const [score, setScore] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [questionStartTime, setQuestionStartTime] = useState<number>(0)
+  const [totalTimeMs, setTotalTimeMs] = useState(0)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const fetchQuestion = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/question')
+      const question = await response.json()
+      setCurrentQuestion(question)
+      setQuestionStartTime(performance.now())
+      setUserAnswer('')
+    } catch (error) {
+      console.error('Failed to fetch question:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const startGame = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!playerName.trim()) return
+    setGameStarted(true)
+    setQuestionNumber(1)
+    setScore(0)
+    setTotalTimeMs(0)
+    fetchQuestion()
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!currentQuestion || loading) return
+
+    const responseTime = performance.now() - questionStartTime
+    setTotalTimeMs(prev => prev + responseTime)
+
+    const isCorrect = parseInt(userAnswer) === currentQuestion.answer
+    if (isCorrect) {
+      setScore(prev => prev + 1)
+    }
+
+    if (questionNumber >= TOTAL_QUESTIONS) {
+      // Game finished - submit score
+      const finalTotalTime = totalTimeMs + responseTime
+      const finalScore = isCorrect ? score + 1 : score
+      
+      try {
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            playerName,
+            score: finalScore,
+            totalQuestions: TOTAL_QUESTIONS,
+            totalTimeMs: Math.round(finalTotalTime)
+          })
+        })
+        const result = await response.json()
+        if (result.id) {
+          router.push(`/certificate/${result.id}`)
+        }
+      } catch (error) {
+        console.error('Failed to submit score:', error)
+      }
+    } else {
+      setQuestionNumber(prev => prev + 1)
+      fetchQuestion()
+    }
+  }
+
+  useEffect(() => {
+    if (gameStarted && currentQuestion && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [gameStarted, currentQuestion])
+
+  if (!gameStarted) {
+    return (
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-center">Math Quiz</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={startGame} className="flex flex-col gap-4">
+            <div>
+              <label htmlFor="playerName" className="block text-sm font-medium mb-2">
+                Enter your name to start
+              </label>
+              <Input
+                id="playerName"
+                type="text"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value)}
+                placeholder="Your name"
+                required
+                autoFocus
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Start Quiz
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm text-muted-foreground">
+            Question {questionNumber} of {TOTAL_QUESTIONS}
+          </span>
+          <span className="text-sm font-medium">
+            Score: {score}
+          </span>
+        </div>
+        <Progress value={(questionNumber / TOTAL_QUESTIONS) * 100} />
+      </CardHeader>
+      <CardContent>
+        {loading ? (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Loading question...</p>
+          </div>
+        ) : currentQuestion ? (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="text-center py-4">
+              <p className="text-4xl font-mono font-bold">
+                {currentQuestion.expression} = ?
+              </p>
+            </div>
+            <div>
+              <Input
+                ref={inputRef}
+                type="number"
+                value={userAnswer}
+                onChange={(e) => setUserAnswer(e.target.value)}
+                placeholder="Your answer"
+                required
+                className="text-center text-2xl h-14"
+              />
+            </div>
+            <Button type="submit" size="lg" className="w-full">
+              Submit Answer
+            </Button>
+          </form>
+        ) : null}
+      </CardContent>
+    </Card>
+  )
+}

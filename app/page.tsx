@@ -1,16 +1,29 @@
+import Link from 'next/link'
+import { Quiz } from '@/components/quiz'
+import { Leaderboard } from '@/components/leaderboard'
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center sm:items-start sm:text-left">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            mathing
-          </h1>
-          <p className="max-w-md text-lg text-muted-foreground">
-            To get started, send a prompt or modify this page directly.
+    <main className="min-h-screen bg-background py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-2">Mathing</h1>
+          <p className="text-muted-foreground">
+            Test your mental math skills with quick arithmetic problems
           </p>
+        </header>
+        
+        <div className="flex flex-col lg:flex-row gap-8 items-start justify-center">
+          <Quiz />
+          <Leaderboard />
         </div>
-      </main>
-    </div>
-  );
+        
+        <footer className="mt-12 text-center text-sm text-muted-foreground">
+          <Link href="/privacy" className="hover:underline">
+            Privacy Policy
+          </Link>
+        </footer>
+      </div>
+    </main>
+  )
 }
