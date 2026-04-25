@@ -57,7 +57,7 @@ export function Quiz() {
     fetchQuestion()
   }
 
-  const submitData = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!currentQuestion || submitting) return
 
@@ -66,7 +66,7 @@ export function Quiz() {
     if (!isCorrect) {
       setIsWrong(true)
       setUserAnswer('')
-      return 0
+      return
     }
 
     // Correct answer - record time and proceed
