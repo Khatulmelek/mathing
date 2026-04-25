@@ -13,18 +13,45 @@ function getRandomInt(min: number, max: number): number {
 export function generateQuestion(): Question {
   const operations: Operation[] = ['+', '-', '*']
   const operation = operations[getRandomInt(0, 2)]
-  
+
   let a: number, b: number, answer: number
-  
+
   switch (operation) {
     case '+':
-      a = getRandomInt(1, 99)
-      b = getRandomInt(1, 99)
+      //   a = getRandomInt(1, 99)
+      //   b = getRandomInt(1, 99)
+      switch (getRandomInt(0, 1)) {
+        case 0:
+          a = getRandomInt(1, 10)
+          b = getRandomInt(1, 10)
+          break
+        case 1:
+          a = getRandomInt(1, 99)
+          b = getRandomInt(1, 9) * 10 - a
+          break
+        default:
+          a = getRandomInt(1, 10)
+          b = getRandomInt(1, 10)
+      }
       answer = a + b
       break
     case '-':
-      a = getRandomInt(10, 99)
-      b = getRandomInt(1, a) // Ensure positive result
+      switch (getRandomInt(0, 2)) {
+        case 0:
+          a = getRandomInt(1, 20)
+          b = getRandomInt(1, a)
+          break
+        case 1:
+          b = getRandomInt(1, 99)
+          a = getRandomInt(1, 9) * 10 + b
+          break
+        case 2:
+          a = getRandomInt(10, 99)
+          b = a - getRandomInt(0, 9)
+        default:
+          a = getRandomInt(1, 20)
+          b = getRandomInt(1, a)
+      }
       answer = a - b
       break
     case '*':
@@ -33,7 +60,7 @@ export function generateQuestion(): Question {
       answer = a * b
       break
   }
-  
+
   return {
     id: crypto.randomUUID(),
     expression: `${a} ${operation} ${b}`,
