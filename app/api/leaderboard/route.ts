@@ -8,7 +8,6 @@ export async function GET(request: NextRequest) {
       prefix: `${process.env.VERCEL_BLOB_URL}/entries/`,
       access: 'public'
     })
-    console.info(`request: ${await request.json()}, token: ${process.env.BLOB_READ_WRITE_TOKEN}`)
     const entries = await Promise.all(
       blobs.map(async (blobby) => {
         const response = await get(blobby.url, {access: 'public'})
