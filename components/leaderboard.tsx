@@ -13,12 +13,10 @@ import {
 
 interface LeaderboardEntry {
   id: number
-  player_name: string
-  score: number
-  total_questions: number
-  total_time_ms: number
-  average_time_ms: number
-  created_at: string
+  playerName: string
+  totalQuestions: number
+  totalTimeMs: number
+  createdAt: string
 }
 
 export function Leaderboard() {
@@ -73,13 +71,13 @@ export function Leaderboard() {
             <TableBody>
               {entries.map((entry, index) => (
                 <TableRow key={entry.id}>
-                  <TableCell className="font-medium text-xs sm:text-sm px-2 sm:px-4">{index + 1}</TableCell>
-                  <TableCell className="text-xs sm:text-sm px-2 sm:px-4 max-w-24 sm:max-w-none truncate">{entry.player_name}</TableCell>
+                  <TableCell className="font-medium text-xs sm:text-sm px-2 sm:px-4">{index+1}</TableCell>
+                  <TableCell className="text-xs sm:text-sm px-2 sm:px-4 max-w-24 sm:max-w-none truncate">{entry.playerName}</TableCell>
                   <TableCell className="text-right font-mono text-xs sm:text-sm px-2 sm:px-4">
-                    {formatTime(entry.total_time_ms)}
+                    {formatTime(entry.totalTimeMs)}
                   </TableCell>
                   <TableCell className="text-right font-mono text-xs sm:text-sm px-2 sm:px-4">
-                    {formatTime(entry.average_time_ms)}
+                    {formatTime(entry.totalTimeMs/entry.totalQuestions)}
                   </TableCell>
                 </TableRow>
               ))}
