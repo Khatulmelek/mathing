@@ -22,9 +22,9 @@ export function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const [userAnswer, setUserAnswer] = useState('')
   const [questionNumber, setQuestionNumber] = useState(0)
-  const [score, setScore] = useState(0)
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [isWrong, setIsWrong] = useState(false)
   const [questionStartTime, setQuestionStartTime] = useState<number>(0)
   const [totalTimeMs, setTotalTimeMs] = useState(0)
   const [currentElapsed, setCurrentElapsed] = useState(0)
@@ -50,8 +50,8 @@ export function Quiz() {
     if (!playerName.trim()) return
     setGameStarted(true)
     setQuestionNumber(1)
-    setScore(0)
     setTotalTimeMs(0)
+    setIsWrong(false)
     fetchQuestion()
   }
 
@@ -59,14 +59,21 @@ export function Quiz() {
     e.preventDefault()
     if (!currentQuestion || submitting) return
 
+    const isCorrect = parseInt(userAnswer) === currentQuestion.answer
+    
+    if (!isCorrect) {
+      setIsWrong(true)
+      setUserAnswer('')
+      return
+    }
+
+    // Correct answer - record time and proceed
+    setIsWrong(false)
     const responseTime = performance.now() - questionStartTime
     const newTotalTime = totalTimeMs + responseTime
 
-    const isCorrect = parseInt(userAnswer) === currentQuestion.answer
-    const newScore = isCorrect ? score + 1 : score
-
     if (questionNumber >= TOTAL_QUESTIONS) {
-      // Game finished - submit score
+      // Game finished - submit result
       setSubmitting(true)
       
       try {
@@ -75,7 +82,6 @@ export function Quiz() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             playerName,
-            score: newScore,
             totalQuestions: TOTAL_QUESTIONS,
             totalTimeMs: Math.round(newTotalTime)
           })
@@ -85,11 +91,10 @@ export function Quiz() {
           router.push(`/certificate/${result.id}`)
         }
       } catch (error) {
-        console.error('Failed to submit score:', error)
+        console.error('Failed to submit:', error)
         setSubmitting(false)
       }
     } else {
-      setScore(newScore)
       setTotalTimeMs(newTotalTime)
       setQuestionNumber(prev => prev + 1)
       fetchQuestion()
@@ -151,12 +156,9 @@ export function Quiz() {
   return (
     <Card className="w-full">
       <CardHeader className="pb-3 sm:pb-6">
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-center items-center mb-2">
           <span className="text-xs sm:text-sm text-muted-foreground">
             Question {questionNumber} of {TOTAL_QUESTIONS}
-          </span>
-          <span className="text-xs sm:text-sm font-medium">
-            Score: {score}
           </span>
         </div>
         <Progress value={(questionNumber / TOTAL_QUESTIONS) * 100} className="h-2" />
@@ -184,11 +186,19 @@ export function Quiz() {
                 inputMode="numeric"
                 pattern="[0-9]*"
                 value={userAnswer}
-                onChange={(e) => setUserAnswer(e.target.value)}
+                onChange={(e) => {
+                  setUserAnswer(e.target.value)
+                  if (isWrong) setIsWrong(false)
+                }}
                 placeholder="Your answer"
                 required
-                className="text-center text-xl sm:text-2xl h-12 sm:h-14"
+                className={`text-center text-xl sm:text-2xl h-12 sm:h-14 transition-colors ${
+                  isWrong ? 'border-red-500 border-2 bg-red-50 dark:bg-red-950/20 focus-visible:ring-red-500' : ''
+                }`}
               />
+              {isWrong && (
+                <p className="text-red-500 text-sm text-center mt-2">Wrong answer, try again!</p>
+              )}
             </div>
             <Button type="submit" size="lg" className="w-full h-12 sm:h-11 text-base" disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit Answer'}
