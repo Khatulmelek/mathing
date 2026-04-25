@@ -16,9 +16,8 @@ export async function GET(request: NextRequest) {
     //   })
     // )
     let data = await get('entries.json', {access: 'private'})
-    if (data.statusCode == 200) let entries = JSON.parse(await text(data.stream))
-    else throw new Error("Resource does not exist");
-    
+    if (data.statusCode != 200) throw new Error("Resource does not exist")
+    let entries = JSON.parse(await text(data.stream))
 
     console.info(entries)
     
