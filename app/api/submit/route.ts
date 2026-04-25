@@ -29,10 +29,18 @@ export async function POST(request: NextRequest) {
   //   access: 'private'
   // })
 
-  let entries = JSON.parse(await text(await get('entries.json', {access: 'private'}).stream))
-  entries.push(entry)
+  let data = await get('entries.json', {access: 'private'})
 
-  entries.sort((a, b) => a.totalTimeMs - b.totalTimeMs)
+  if (data == undefined)
+  {
+    let entries = [entry]
+  }
+  else {
+    let entries = JSON.parse(await text(data.stream))
+    entries.push(entry)
+
+    entries.sort((a, b) => a.totalTimeMs - b.totalTimeMs)
+  }
 
   await put('entries.json', JSON.stringify(entries), {access: 'private'})
 
@@ -60,7 +68,7 @@ export async function POST(request: NextRequest) {
   // //    )
 
 
-  return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry) }, {status: 200})
+  return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   } catch (error) {
     console.error(`Submission error: ${error}`)
     return NextResponse.json({ error: 'Failed to submit' }, { status: 500 })
