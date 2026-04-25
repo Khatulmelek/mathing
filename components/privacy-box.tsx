@@ -5,7 +5,7 @@ export function PrivacyBox() {
   return (
     <Card className="w-full">
       <CardHeader className="pb-3 sm:pb-6">
-        <CardTitle className="text-center text-lg sm:text-xl">Privacy Policy</CardTitle>
+        <CardTitle className="text-center text-lg sm:text-xl">Polityka prywatności</CardTitle>
       </CardHeader>
       <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6 text-sm sm:text-base text-muted-foreground space-y-4">
         <ol>

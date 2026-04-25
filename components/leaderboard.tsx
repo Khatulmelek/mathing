@@ -53,21 +53,21 @@ export function Leaderboard() {
   return (
     <Card className="w-full">
       <CardHeader className="pb-3 sm:pb-6">
-        <CardTitle className="text-center text-lg sm:text-xl">Leaderboard</CardTitle>
+        <CardTitle className="text-center text-lg sm:text-xl">Ranking</CardTitle>
       </CardHeader>
       <CardContent className="px-3 pb-4 sm:px-6 sm:pb-6">
         {loading ? (
-          <p className="text-center text-sm sm:text-base text-muted-foreground">Loading...</p>
+          <p className="text-center text-sm sm:text-base text-muted-foreground">Ładowanie...</p>
         ) : entries.length === 0 ? (
-          <p className="text-center text-sm sm:text-base text-muted-foreground">No scores yet. Be the first!</p>
+          <p className="text-center text-sm sm:text-base text-muted-foreground">Jeszcze nikt nie ukończył quizu.</p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-8 sm:w-12 text-xs sm:text-sm px-2 sm:px-4">#</TableHead>
-                <TableHead className="text-xs sm:text-sm px-2 sm:px-4">Player</TableHead>
-                <TableHead className="text-right text-xs sm:text-sm px-2 sm:px-4">Total</TableHead>
-                <TableHead className="text-right text-xs sm:text-sm px-2 sm:px-4">Avg</TableHead>
+                <TableHead className="text-xs sm:text-sm px-2 sm:px-4">Gracz</TableHead>
+                <TableHead className="text-right text-xs sm:text-sm px-2 sm:px-4">Razem</TableHead>
+                <TableHead className="text-right text-xs sm:text-sm px-2 sm:px-4">Średnio</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

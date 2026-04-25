@@ -95,7 +95,7 @@ export function Quiz() {
               </CardHeader>
               <CardContent  className="px-4 pb-4 sm:px-6 sm:pb-6">
                 <h3 className="text-center mt-2">Ukończyłeś quiz!</h3>
-                <p className="text-center mt-2 text-sm">Miejsce w rankingu: <b>/*HERE GOES YE PLACE*/</b></p>
+                <p className="text-center mt-2 text-sm">Miejsce w rankingu: <b>{result.pos}</b></p>
                 <p className="text-center mt-2 text-sm">Czas ukończenia: <b>{((totalTimeMs) / 1000).toFixed(1)}s</b></p>
               </CardContent>
             </Card>
@@ -136,7 +136,7 @@ export function Quiz() {
     return (
       <Card className="w-full">
         <CardHeader className="pb-3 sm:pb-6">
-          <CardTitle className="text-center text-lg sm:text-xl">Math Quiz</CardTitle>
+          <CardTitle className="text-center text-lg sm:text-xl">Quiz</CardTitle>
         </CardHeader>
         <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
           <form onSubmit={startGame} className="flex flex-col gap-3 sm:gap-4">
@@ -170,7 +170,7 @@ export function Quiz() {
       <CardHeader className="pb-3 sm:pb-6">
         <div className="flex justify-center items-center mb-2">
           <span className="text-xs sm:text-sm text-muted-foreground">
-            Question {questionNumber} of {TOTAL_QUESTIONS}
+            Pytanie {questionNumber} z {TOTAL_QUESTIONS}
           </span>
         </div>
         <Progress value={(questionNumber / TOTAL_QUESTIONS) * 100} className="h-2" />
@@ -178,13 +178,13 @@ export function Quiz() {
       <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
         {loading ? (
           <div className="text-center py-6 sm:py-8">
-            <p className="text-sm sm:text-base text-muted-foreground">Loading question...</p>
+            <p className="text-sm sm:text-base text-muted-foreground">Ładowanie pytania...</p>
           </div>
         ) : currentQuestion ? (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
             <div className="flex justify-between items-center text-xs sm:text-sm text-muted-foreground">
-              <span>This question: <span className="font-mono font-medium text-foreground">{(currentElapsed / 1000).toFixed(1)}s</span></span>
-              <span>Total: <span className="font-mono font-medium text-foreground">{((totalTimeMs + currentElapsed) / 1000).toFixed(1)}s</span></span>
+              <span>Czas na to pytanie: <span className="font-mono font-medium text-foreground">{(currentElapsed / 1000).toFixed(1)}s</span></span>
+              <span>Całkowity czas: <span className="font-mono font-medium text-foreground">{((totalTimeMs + currentElapsed) / 1000).toFixed(1)}s</span></span>
             </div>
             <div className="text-center py-3 sm:py-4">
               <p className="text-3xl sm:text-4xl font-mono font-bold">
@@ -202,18 +202,18 @@ export function Quiz() {
                   setUserAnswer(e.target.value)
                   if (isWrong) setIsWrong(false)
                 }}
-                placeholder="Your answer"
+                placeholder="Twoja odpowiedź"
                 required
                 className={`text-center text-xl sm:text-2xl h-12 sm:h-14 transition-colors ${
                   isWrong ? 'border-red-500 border-2 bg-red-50 dark:bg-red-950/20 focus-visible:ring-red-500' : ''
                 }`}
               />
               {isWrong && (
-                <p className="text-red-500 text-sm text-center mt-2">Wrong answer, try again!</p>
+                <p className="text-red-500 text-sm text-center mt-2">Zła odpowiedź, spróbuj ponownie!</p>
               )}
             </div>
             <Button type="submit" size="lg" className="w-full h-12 sm:h-11 text-base" disabled={submitting}>
-              {submitting ? 'Submitting...' : 'Submit Answer'}
+              {submitting ? 'Wysyłanie...' : 'Wyślij'}
             </Button>
           </form>
         ) : null}
