@@ -34,15 +34,19 @@ export async function POST(request: NextRequest) {
   if (data == undefined)
   {
     let entries = [entry]
+    await put('entries.json', JSON.stringify(entries), {access: 'private'})
+    return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   }
   else {
     let entries = JSON.parse(await text(data.stream))
     entries.push(entry)
 
-    entries.sort((a, b) => a.totalTimeMs - b.totalTimeMs)
+    if(entries.length() > 1) entries.sort((a, b) => a?.totalTimeMs - b?.totalTimeMs)
+    await put('entries.json', JSON.stringify(entries), {access: 'private'})
+    return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   }
 
-  await put('entries.json', JSON.stringify(entries), {access: 'private'})
+  
 
   // const { blobs } = await list({
   //     prefix: 'entries/',
@@ -68,7 +72,6 @@ export async function POST(request: NextRequest) {
   // //    )
 
 
-  return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   } catch (error) {
     console.error(`Submission error: ${error}`)
     return NextResponse.json({ error: 'Failed to submit' }, { status: 500 })
