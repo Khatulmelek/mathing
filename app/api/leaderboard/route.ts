@@ -6,12 +6,12 @@ export async function GET() {
     const { blobs } = await list({
       prefix: 'entries/',
       access: 'private',
-      token: process.env.LEADER_READ_WRITE_TOKEN
+      token: process.env.BLOB_READ_WRITE_TOKEN
     })
 
     const entries = await Promise.all(
       blobs.map(async (blob) => {
-        const response = await get(blob.url, {access: 'private', token: process.env.LEADER_READ_WRITE_TOKEN})
+        const response = await get(blob.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
         return response.json()
       })
     )
