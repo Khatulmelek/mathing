@@ -158,6 +158,9 @@ importers:
       zod:
         specifier: ^3.24.1
         version: 3.25.76
+      '@vercel/blob':
+        specifier: 2.3.3
+        version: 2.3.3
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.2.0
