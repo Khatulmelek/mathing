@@ -19,11 +19,12 @@ export async function POST(request: NextRequest) {
 
   const { blobs } = await list({
       prefix: 'entries/',
+      access: 'private'
     })
     
-    const entries = await Promise.all(
+  const entries = await Promise.all(
       blobs.map(async (blob) => {
-        const response = await fetch(blob.url)
+        const response = await get(blob.url, {access: 'private'})
         return response.json()
       })
     )
