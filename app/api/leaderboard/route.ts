@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import {list, get} from '@vercel/blob'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // url: process.env.VERCEL_BLOB_URL
     const { blobs } = await list({
