@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     let entries = JSON.parse(await text(data.stream))
     entries.push(entry)
     console.info(entries)
-    if(entries.length() > 1) entries.sort((a, b) => a?.totalTimeMs - b?.totalTimeMs)
+    entries?.sort((a, b) => a?.totalTimeMs - b?.totalTimeMs)
     await put('entries.json', JSON.stringify(entries), {access: 'private'})
     return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   }
