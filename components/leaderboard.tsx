@@ -67,7 +67,8 @@ export function Leaderboard() {
                 <TableHead className="w-8 sm:w-12 text-xs sm:text-sm px-2 sm:px-4">#</TableHead>
                 <TableHead className="text-xs sm:text-sm px-2 sm:px-4">Player</TableHead>
                 <TableHead className="text-center text-xs sm:text-sm px-2 sm:px-4">Score</TableHead>
-                <TableHead className="text-right text-xs sm:text-sm px-2 sm:px-4">Time</TableHead>
+                <TableHead className="text-right text-xs sm:text-sm px-1 sm:px-4">Total</TableHead>
+                <TableHead className="text-right text-xs sm:text-sm px-2 sm:px-4">Avg</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -77,6 +78,9 @@ export function Leaderboard() {
                   <TableCell className="text-xs sm:text-sm px-2 sm:px-4 max-w-24 sm:max-w-none truncate">{entry.player_name}</TableCell>
                   <TableCell className="text-center text-xs sm:text-sm px-2 sm:px-4">
                     {entry.score}/{entry.total_questions}
+                  </TableCell>
+                  <TableCell className="text-right font-mono text-xs sm:text-sm px-1 sm:px-4">
+                    {formatTime(entry.total_time_ms)}
                   </TableCell>
                   <TableCell className="text-right font-mono text-xs sm:text-sm px-2 sm:px-4">
                     {formatTime(entry.average_time_ms)}

@@ -27,6 +27,7 @@ export function Quiz() {
   const [submitting, setSubmitting] = useState(false)
   const [questionStartTime, setQuestionStartTime] = useState<number>(0)
   const [totalTimeMs, setTotalTimeMs] = useState(0)
+  const [currentElapsed, setCurrentElapsed] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const fetchQuestion = async () => {
@@ -101,6 +102,20 @@ export function Quiz() {
     }
   }, [gameStarted, currentQuestion])
 
+  // Live timer update
+  useEffect(() => {
+    if (!gameStarted || loading || !currentQuestion) {
+      setCurrentElapsed(0)
+      return
+    }
+
+    const interval = setInterval(() => {
+      setCurrentElapsed(performance.now() - questionStartTime)
+    }, 50)
+
+    return () => clearInterval(interval)
+  }, [gameStarted, loading, currentQuestion, questionStartTime])
+
   if (!gameStarted) {
     return (
       <Card className="w-full">
@@ -153,6 +168,10 @@ export function Quiz() {
           </div>
         ) : currentQuestion ? (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
+            <div className="flex justify-between items-center text-xs sm:text-sm text-muted-foreground">
+              <span>This question: <span className="font-mono font-medium text-foreground">{(currentElapsed / 1000).toFixed(1)}s</span></span>
+              <span>Total: <span className="font-mono font-medium text-foreground">{((totalTimeMs + currentElapsed) / 1000).toFixed(1)}s</span></span>
+            </div>
             <div className="text-center py-3 sm:py-4">
               <p className="text-3xl sm:text-4xl font-mono font-bold">
                 {currentQuestion.expression} = ?
