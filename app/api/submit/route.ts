@@ -2,6 +2,16 @@ import { NextResponse, NextRequest } from 'next/server'
 import {put, list, get} from '@vercel/blob'
 import { text } from 'node:stream/consumers';
 
+// function text(str, encoding = 'utf8') {
+//   return new Promise<string>((resolve, reject) => {
+//     const chunks: string[] = [];
+//     if (encoding) str.setEncoding(encoding);
+//     str.on('data', (chunk: string) => chunks.push(chunk));
+//     str.on('end', () => resolve(chunks.join('')));
+//     str.on('error', reject);
+//   });
+// }
+
 export async function POST(request: NextRequest) {
   try {
 

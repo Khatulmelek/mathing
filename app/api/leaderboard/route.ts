@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import {list, get} from '@vercel/blob'
+import { text } from 'node:stream/consumers';
 
 export async function GET(request: NextRequest) {
   try {
