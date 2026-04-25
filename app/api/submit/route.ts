@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   }
   
   await put(`entries/${entry.id}.json`, JSON.stringify(entry), {
-    access: 'public'
+    access: 'private'
   })
 
   const { blobs } = await list({
