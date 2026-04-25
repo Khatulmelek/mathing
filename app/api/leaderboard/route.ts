@@ -4,16 +4,18 @@ import {list, get} from '@vercel/blob'
 export async function GET(request: NextRequest) {
   try {
     // url: process.env.VERCEL_BLOB_URL
-    const { blobs } = await list({
-      prefix: `${process.env.VERCEL_BLOB_URL}/entries/`,
-      access: 'public'
-    })
-    const entries = await Promise.all(
-      blobs.map(async (blobby) => {
-        const response = await get(blobby.url, {access: 'public'})
-        return response.json()
-      })
-    )
+    // const { blobs } = await list({
+    //   prefix: `${process.env.VERCEL_BLOB_URL}/entries/`,
+    //   access: 'private'
+    // })
+    // const entries = await Promise.all(
+    //   blobs.map(async (blobby) => {
+    //     const response = await get(blobby.url, {access: 'private'})
+    //     return response.json()
+    //   })
+    // )
+
+    let entries = JSON.parse(await text(await get('entries.json', {access: 'private'}).stream))
     
     // Sort by total time (fastest first)
     return NextResponse.json(
