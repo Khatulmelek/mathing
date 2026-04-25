@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     completedAt: new Date().toISOString()
   }
   await put(`entries/${entry.id}.json`, JSON.stringify(entry), {
-    access: 'public',
+    access: 'private',
     token: process.env.LEADER_READ_WRITE_TOKEN
   })
 
