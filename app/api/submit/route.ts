@@ -43,8 +43,9 @@ export async function POST(request: NextRequest) {
   //        .sort((a, b) => a.totalTimeMs - b.totalTimeMs)
   //        .slice(0, 10)
   //    )
-  return NextResponse.json({ success: true, id: entry.id, pos: dbretr.indexOf(entry) })
+  return NextResponse.json({ success: true, id: entry.id, pos: dbretr.indexOf(entry) }, {status: 200})
   } catch (error) {
     console.error(`Submission error: ${error}`)
+    return NextResponse.json({ error: 'Failed to submit' }, { status: 500 })
   }
 }
