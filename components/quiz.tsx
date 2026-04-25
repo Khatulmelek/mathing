@@ -80,6 +80,7 @@ export function Quiz() {
       setSubmitting(true)
       
       try {
+        console.log("Fetching...")
         const response = await fetch('/api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

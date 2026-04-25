@@ -2,7 +2,8 @@ import { NextResponse, NextRequest } from 'next/server'
 import { put, list, get } from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
-  const { playerName, totalTimeMs, totalQuestions } = await request.json()
+  try {
+    const { playerName, totalTimeMs, totalQuestions } = await request.json()
   
   // Save to Vercel Blob
   const entry = {
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
     totalQuestions,
     completedAt: new Date().toISOString()
   }
-  
+  console.log(`request: ${await request.json()}, token: ${process.env.LEADER_READ_WRITE_TOKEN}`)
   await put(`entries/${entry.id}.json`, JSON.stringify(entry), {
     access: 'private',
     token: process.env.LEADER_READ_WRITE_TOKEN
@@ -42,4 +43,7 @@ export async function POST(request: NextRequest) {
   //        .slice(0, 10)
   //    )
   return NextResponse.json({ success: true, id: entry.id, pos: dbretr.indexOf(entry) })
+  } catch (error) {
+    console.error(`Submission error: ${error}`)
+  }
 }
