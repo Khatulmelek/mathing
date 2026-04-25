@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   const entries = await Promise.all(
       blobs.map(async (blobby) => {
         const response = await get(blobby.url, {access: 'public'})
-        return response.json()
+        return response
       })
     )
     
