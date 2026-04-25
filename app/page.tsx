@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Quiz } from '@/components/quiz'
 import { Leaderboard } from '@/components/leaderboard'
+import { PrivacyBox } from '@/components/privacy-box'
 
 export default function Home() {
   return (
@@ -13,13 +14,8 @@ export default function Home() {
         <div className="flex flex-col gap-6 sm:gap-8">
           <Quiz />
           <Leaderboard />
+          <PrivacyBox />
         </div>
-
-        <footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm text-muted-foreground">
-          <Link href="/privacy" className="hover:underline">
-            Privacy Policy
-          </Link>
-        </footer>
       </div>
     </main>
   )
