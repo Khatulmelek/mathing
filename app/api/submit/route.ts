@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
   if (data == undefined)
   {
     let entries = [entry]
-    await put('entries.json', JSON.stringify(entries), {access: 'private'})
+    await put('entries.json', JSON.stringify(entries), {access: 'private', allowOverwrite: true})
     return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   }
   else {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     entries.push(entry)
     console.info(entries)
     entries?.sort((a, b) => a?.totalTimeMs - b?.totalTimeMs)
-    await put('entries.json', JSON.stringify(entries), {access: 'private'})
+    await put('entries.json', JSON.stringify(entries), {access: 'private', allowOverwrite: true})
     return NextResponse.json({ success: true, id: entry.id, pos: entries.indexOf(entry)+1 }, {status: 200})
   }
 
