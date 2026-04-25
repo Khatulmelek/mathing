@@ -13,7 +13,7 @@ interface Question {
   answer: number
 }
 
-const TOTAL_QUESTIONS = 1
+const TOTAL_QUESTIONS = 20
 
 export function Quiz() {
   const router = useRouter()
@@ -94,6 +94,7 @@ export function Quiz() {
         if (result.id) {
           setGameEnded(true)
           setPosition(result.pos)
+          setTotalTimeMs(result.time)
           return
         }
       } catch (error) {
@@ -138,6 +139,7 @@ export function Quiz() {
                 <h3 className="text-center mt-2">Ukończyłeś quiz!</h3>
                 <p className="text-center mt-2 text-sm">Miejsce w rankingu: <b>{position}</b></p>
                 <p className="text-center mt-2 text-sm">Czas ukończenia: <b>{((totalTimeMs) / 1000).toFixed(1)}s</b></p>
+                <p className="text-center mt-2 text-sm">Czas na pytanie: <b>{((totalTimeMs) / 1000 / TOTAL_QUESTIONS).toFixed(1)}s</b></p>
               </CardContent>
             </Card>
           )
