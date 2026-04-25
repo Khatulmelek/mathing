@@ -3,7 +3,6 @@ import { put, list, get, createBlobClient } from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
   try {
-const blob = createBlobClient({ url: process.env.VERCEL_BLOB_URL })
 
     const { playerName, totalTimeMs, totalQuestions } = await request.json()
   
@@ -22,7 +21,7 @@ const blob = createBlobClient({ url: process.env.VERCEL_BLOB_URL })
   })
 
   const { blobs } = await blob.list({
-      prefix: 'entries/',
+      prefix: process.env.VERCEL_BLOB_URL+'entries/',
       access: 'private',
       token: process.env.BLOB_READ_WRITE_TOKEN
     })

@@ -3,9 +3,9 @@ import { list, get, createBlobClient } from '@vercel/blob'
 
 export async function GET() {
   try {
-    const blob = createBlobClient({ url: process.env.VERCEL_BLOB_URL })
+    // url: process.env.VERCEL_BLOB_URL
     const { blobs } = await blob.list({
-      prefix: 'entries/',
+      prefix: `${process.env.VERCEL_BLOB_URL}/entries/`,
       access: 'private',
       token: process.env.BLOB_READ_WRITE_TOKEN
     })
