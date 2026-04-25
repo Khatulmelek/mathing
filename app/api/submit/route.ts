@@ -1,8 +1,10 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { put, list, get } from '@vercel/blob'
+import { put, list, get, createBlobClient } from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
   try {
+const blob = createBlobClient({ url: process.env.VERCEL_BLOB_URL })
+
     const { playerName, totalTimeMs, totalQuestions } = await request.json()
   
   // Save to Vercel Blob
@@ -13,21 +15,21 @@ export async function POST(request: NextRequest) {
     totalQuestions,
     completedAt: new Date().toISOString()
   }
-  console.log(`request: ${await request.json()}, token: ${process.env.BLOB_READ_WRITE_TOKEN}`)
-  await put(`entries/${entry.id}.json`, JSON.stringify(entry), {
+  console.info(`request: ${await request.json()}, token: ${process.env.BLOB_READ_WRITE_TOKEN}`)
+  await blob.put(`entries/${entry.id}.json`, JSON.stringify(entry), {
     access: 'private',
     token: process.env.BLOB_READ_WRITE_TOKEN
   })
 
-  const { blobs } = await list({
+  const { blobs } = await blob.list({
       prefix: 'entries/',
       access: 'private',
       token: process.env.BLOB_READ_WRITE_TOKEN
     })
     
   const entries = await Promise.all(
-      blobs.map(async (blob) => {
-        const response = await get(blob.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
+      blobs.map(async (blobby) => {
+        const response = await blob.get(blobby.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
         return response.json()
       })
     )
