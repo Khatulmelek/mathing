@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { put } from '@vercel/blob'
+import { put, list, get } from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
   const { playerName, totalTimeMs, totalQuestions } = await request.json()
@@ -14,17 +14,19 @@ export async function POST(request: NextRequest) {
   }
   
   await put(`entries/${entry.id}.json`, JSON.stringify(entry), {
-    access: 'private'
+    access: 'private',
+    token: process.env.LEADER_READ_WRITE_TOKEN
   })
 
   const { blobs } = await list({
       prefix: 'entries/',
-      access: 'private'
+      access: 'private',
+      token: process.env.LEADER_READ_WRITE_TOKEN
     })
     
   const entries = await Promise.all(
       blobs.map(async (blob) => {
-        const response = await get(blob.url, {access: 'private'})
+        const response = await get(blob.url, {access: 'private', token: process.env.LEADER_READ_WRITE_TOKEN})
         return response.json()
       })
     )
