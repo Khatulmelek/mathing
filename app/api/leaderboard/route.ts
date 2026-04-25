@@ -15,8 +15,12 @@ export async function GET(request: NextRequest) {
     //     return response.json()
     //   })
     // )
+    let data = await get('entries.json', {access: 'private'})
+    if (data.statusCode == 200) let entries = JSON.parse(await text(data.stream))
+    else throw new Error("Resource does not exist");
+    
 
-    let entries = JSON.parse(await text(await get('entries.json', {access: 'private'}).stream))
+    console.info(entries)
     
     // Sort by total time (fastest first)
     return NextResponse.json(
