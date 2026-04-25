@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { list, get, createBlobClient } from '@vercel/blob'
+import blob from '@vercel/blob'
 
 export async function GET() {
   try {

@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { put, list, get, createBlobClient } from '@vercel/blob'
+import blob from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
   try {
