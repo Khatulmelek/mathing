@@ -76,6 +76,7 @@ export function Quiz() {
 
     if (questionNumber >= TOTAL_QUESTIONS) {
       // Game finished - submit result
+      console.log("Quiz ending condition triggered")
       setSubmitting(true)
       
       try {
@@ -125,7 +126,7 @@ export function Quiz() {
     return () => clearInterval(interval)
   }, [gameStarted, loading, currentQuestion, questionStartTime])
 
-  if(questionNumber >= TOTAL_QUESTIONS)
+  if(gameEnded)
   {
     return (
             <Card classname="w-full">
