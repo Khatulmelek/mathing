@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server'
-import blob from '@vercel/blob'
+import {list, get} from '@vercel/blob'
 
 export async function GET() {
   try {
     // url: process.env.VERCEL_BLOB_URL
-    const { blobs } = await blob.list({
+    const { blobs } = await list({
       prefix: `${process.env.VERCEL_BLOB_URL}/entries/`,
-      access: 'private',
-      token: process.env.BLOB_READ_WRITE_TOKEN
+      access: 'public'
     })
     console.info(`request: ${await request.json()}, token: ${process.env.BLOB_READ_WRITE_TOKEN}`)
     const entries = await Promise.all(
       blobs.map(async (blobby) => {
-        const response = await blob.get(blobby.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
+        const response = await get(blobby.url, {access: 'public'})
         return response.json()
       })
     )

@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server'
-import blob from '@vercel/blob'
+import {put, list, get} from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,12 +15,12 @@ export async function POST(request: NextRequest) {
     completedAt: new Date().toISOString()
   }
   console.info(`request: ${await request.json()}, token: ${process.env.BLOB_READ_WRITE_TOKEN}`)
-  await blob.put(`entries/${entry.id}.json`, JSON.stringify(entry), {
+  await put(`${process.env.VERCEL_BLOB_URL}/entries/${entry.id}.json`, JSON.stringify(entry), {
     access: 'private',
     token: process.env.BLOB_READ_WRITE_TOKEN
   })
 
-  const { blobs } = await blob.list({
+  const { blobs } = await list({
       prefix: process.env.VERCEL_BLOB_URL+'entries/',
       access: 'private',
       token: process.env.BLOB_READ_WRITE_TOKEN
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     
   const entries = await Promise.all(
       blobs.map(async (blobby) => {
-        const response = await blob.get(blobby.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
+        const response = await get(blobby.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
         return response.json()
       })
     )
