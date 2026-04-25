@@ -17,8 +17,10 @@ const TOTAL_QUESTIONS = 20
 
 export function Quiz() {
   const router = useRouter()
+  const [position, setPosition] = useState(-1)
   const [playerName, setPlayerName] = useState('')
   const [gameStarted, setGameStarted] = useState(false)
+  const [gameEnded, setGameEnded] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const [userAnswer, setUserAnswer] = useState('')
   const [questionNumber, setQuestionNumber] = useState(0)
@@ -55,7 +57,7 @@ export function Quiz() {
     fetchQuestion()
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const submitData = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!currentQuestion || submitting) return
 
@@ -64,7 +66,7 @@ export function Quiz() {
     if (!isCorrect) {
       setIsWrong(true)
       setUserAnswer('')
-      return
+      return 0
     }
 
     // Correct answer - record time and proceed
@@ -88,18 +90,9 @@ export function Quiz() {
         })
         const result = await response.json()
         if (result.id) {
-          return (
-            <Card classname="w-full">
-              <CardHeader className="pb-3 sm:pb-6">
-                <CardTitle className="text-center text-lg sm:text-xl">Quiz</CardTitle>
-              </CardHeader>
-              <CardContent  className="px-4 pb-4 sm:px-6 sm:pb-6">
-                <h3 className="text-center mt-2">Ukończyłeś quiz!</h3>
-                <p className="text-center mt-2 text-sm">Miejsce w rankingu: <b>{result.pos}</b></p>
-                <p className="text-center mt-2 text-sm">Czas ukończenia: <b>{((totalTimeMs) / 1000).toFixed(1)}s</b></p>
-              </CardContent>
-            </Card>
-          )
+          setGameEnded(true)
+          setPosition(result.pos)
+          return
         }
       } catch (error) {
         console.error('Failed to submit:', error)
@@ -131,6 +124,22 @@ export function Quiz() {
 
     return () => clearInterval(interval)
   }, [gameStarted, loading, currentQuestion, questionStartTime])
+
+  if(questionNumber >= TOTAL_QUESTIONS)
+  {
+    return (
+            <Card classname="w-full">
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="text-center text-lg sm:text-xl">Quiz</CardTitle>
+              </CardHeader>
+              <CardContent  className="px-4 pb-4 sm:px-6 sm:pb-6">
+                <h3 className="text-center mt-2">Ukończyłeś quiz!</h3>
+                <p className="text-center mt-2 text-sm">Miejsce w rankingu: <b>{position}</b></p>
+                <p className="text-center mt-2 text-sm">Czas ukończenia: <b>{((totalTimeMs) / 1000).toFixed(1)}s</b></p>
+              </CardContent>
+            </Card>
+          )
+  }
 
   if (!gameStarted) {
     return (
