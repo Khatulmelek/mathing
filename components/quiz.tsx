@@ -13,7 +13,7 @@ interface Question {
   answer: number
 }
 
-const TOTAL_QUESTIONS = 3
+const TOTAL_QUESTIONS = 1
 
 export function Quiz() {
   const router = useRouter()
