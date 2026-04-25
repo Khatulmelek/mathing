@@ -14,18 +14,18 @@ export async function POST(request: NextRequest) {
     totalQuestions,
     completedAt: new Date().toISOString()
   }
-  await put(process.env.VERCEL_BLOB_URL+`/entries/${entry.id}.json`, JSON.stringify(entry), {
+  await put(`entries/${entry.id}.json`, JSON.stringify(entry), {
     access: 'public'
   })
 
   const { blobs } = await list({
-      prefix: process.env.VERCEL_BLOB_URL+'entries/',
+      prefix: 'entries/',
       access: 'public'
     })
     
   const entries = await Promise.all(
       blobs.map(async (blobby) => {
-        const response = await get(blobby.url, {access: 'private', token: process.env.BLOB_READ_WRITE_TOKEN})
+        const response = await get(blobby.url, {access: 'public'})
         return response.json()
       })
     )
