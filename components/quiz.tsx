@@ -88,7 +88,18 @@ export function Quiz() {
         })
         const result = await response.json()
         if (result.id) {
-          router.push(`/certificate/${result.id}`)
+          return (
+            <Card classname="w-full">
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="text-center text-lg sm:text-xl">Quiz</CardTitle>
+              </CardHeader>
+              <CardContent  className="px-4 pb-4 sm:px-6 sm:pb-6">
+                <h3 className="text-center mt-2">Ukończyłeś quiz!</h3>
+                <p className="text-center mt-2 text-sm">Miejsce w rankingu: <b>/*HERE GOES YE PLACE*/</b></p>
+                <p className="text-center mt-2 text-sm">Czas ukończenia: <b>{((totalTimeMs) / 1000).toFixed(1)}s</b></p>
+              </CardContent>
+            </Card>
+          )
         }
       } catch (error) {
         console.error('Failed to submit:', error)
@@ -131,22 +142,23 @@ export function Quiz() {
           <form onSubmit={startGame} className="flex flex-col gap-3 sm:gap-4">
             <div>
               <label htmlFor="playerName" className="block text-sm font-medium mb-1.5 sm:mb-2">
-                Enter your name to start
+                Wpisz nazwę użytkownika
               </label>
               <Input
                 id="playerName"
                 type="text"
                 value={playerName}
                 onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Your name"
+                placeholder="Nazwa użytkownika"
                 required
                 autoFocus
                 className="h-11 sm:h-10 text-base"
               />
             </div>
             <Button type="submit" className="w-full h-11 sm:h-10 text-base">
-              Start Quiz
+              Rozpocznij Quiz
             </Button>
+            <p className="text-center mt-2 text-sm">Rozpoczynając ten quiz, akceptujesz Politykę Prywatności.</p>
           </form>
         </CardContent>
       </Card>
