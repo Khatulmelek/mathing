@@ -27,7 +27,7 @@ export function generateQuestion(): Question {
           break
         case 1:
           a = getRandomInt(1, 99)
-          b = getRandomInt(Math.floor(a / 10), Math.floor(a / 10)+9) * 10 - a
+          b = getRandomInt(1,6)*10+(10-(a%10))
           break
         default:
           a = getRandomInt(1, 10)
