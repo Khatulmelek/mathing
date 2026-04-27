@@ -84,7 +84,7 @@ export function Leaderboard() {
             </TableBody>
           </Table>
         )}
-        <p className="text-center text-sm sm:text-base text-muted-foreground"><a href="mathing-two.vercel.app/leaderboard">Zobacz pełną tablicę wyników</a></p>
+        <p className="text-center text-sm sm:text-base text-muted-foreground"><a href="/leaderboard">Zobacz pełną tablicę wyników</a></p>
       </CardContent>
     </Card>
   )
