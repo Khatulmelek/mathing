@@ -26,7 +26,7 @@ export function Leaderboard() {
   useEffect(() => {
     async function fetchLeaderboard() {
       try {
-        const response = await fetch('/api/leaderboard')
+        const response = await fetch('/api/leaderboard-full')
         const data = await response.json()
         if (Array.isArray(data)) {
           setEntries(data)
@@ -84,7 +84,6 @@ export function Leaderboard() {
             </TableBody>
           </Table>
         )}
-        <p className="text-center text-sm sm:text-base text-muted-foreground"><a href="mathing-two.vercel.app/leaderboard">Zobacz pełną tablicę wyników</a></p>
       </CardContent>
     </Card>
   )
